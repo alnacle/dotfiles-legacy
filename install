@@ -1,0 +1,17 @@
+#!/bin/sh
+
+INSTALL_DIR=~/.dotfiles
+
+if [ ! -d $INSTALL_DIR ]; then
+	echo "Ops! dotfies must be installed on $INSTALL_DIR"
+	exit 1
+fi
+
+deploy() {
+	[ -f $2 ] && mv $2 $2.old || ln -sv $1 $2 
+}
+
+deploy $INSTALL_DIR/vim/vimrc ~/.vimrc
+deploy $INSTALL_DIR/git/gitconfig ~/.gitconfig
+deploy $INSTALL_DIR/git/gitignore ~/.gitignore
+
