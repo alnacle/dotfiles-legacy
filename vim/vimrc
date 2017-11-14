@@ -1,0 +1,219 @@
+" Author: Alvaro Navarro <alnacle@achtung.es>
+
+" Setting up the vim plugin bundler
+" Kudos go to Juan Pedro Fisanotti (@fisadev) for the idea
+let iCanHazVundle=1
+let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+if !filereadable(vundle_readme)
+    echo "Installing Vundle..."
+    echo ""
+    silent !mkdir -p ~/.vim/bundle
+    silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+    let iCanHazVundle=0
+endif
+
+" Some Linux distributions set filetype in general vimrc config
+filetype off
+filetype plugin indent off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Plugin 'gmarik/vundle'                   " vundle
+Plugin 'scrooloose/nerdtree'             " file browser
+Plugin 'majutsushi/tagbar'               " tags browser from source code files
+Plugin 'itchyny/lightline.vim'           " light statusline
+Plugin 'qpkorr/vim-bufkill'              " delete a buffer without closing window 
+Plugin 'milkypostman/vim-togglelist'     " toggle QuickFix list
+Plugin 'vim-scripts/a.vim'               " switch between source files and header
+Plugin 'airblade/vim-gitgutter'          " show git diff in the gutter
+Plugin 'morhetz/gruvbox'                 " gruvbox theme
+Plugin 'fatih/vim-go'                    " golang mode
+Plugin 'ctrlpvim/ctrlp.vim'              " full path fuzzy finder
+Plugin 'mileszs/ack.vim'                 " Run ack search tool
+Plugin 'w0rp/ale'                        " linting and fixing tool
+Plugin 'sheerun/vim-polyglot'            " collection of language packs
+
+" Install plugins the first time vim runs
+if iCanHazVundle == 0
+    echo "Installing Bundles, please ignore key map error messages"
+    echo ""
+    :BundleInstall
+endif
+
+filetype plugin indent on
+
+" Master key
+let mapleader = ","
+
+" disable some stuff
+set nocompatible
+set nobackup
+set noswapfile
+set nomodeline
+set noautochdir
+
+" General Editing Stuff
+set tabstop=4       " Use 4 spaces ident style
+set softtabstop=4   " How many columns uses when hitting Tab
+set shiftwidth=4    " Reindenting to 4 spaces
+set expandtab       " Produce the appropriate number of spaces
+set autoindent      " Automatically set the indent of a new line
+set copyindent      " Copy (exact) indention from the previous line.
+set nosmartindent   " Does not the right thing
+set nowrap          " Don't wrap text
+set linebreak       " Wrap at word
+set textwidth=0     " Don't automatically wrap lines.
+set hidden          " Hide buffers instead of closing them
+set ttyfast         " Improves redrawing for newer computers.
+set lazyredraw      " Don't redraw during macros
+set colorcolumn=+1  " Show the 81st column
+set gdefault        " Use 'g' flag by default with :s/foo/bar/.
+
+" Encoding
+set encoding=utf8
+set fileencoding=utf-8
+set nobomb
+
+" a showmatch will wait half a second or until a character is typed
+set cpoptions-=m
+
+" Suffixes that get lower priority when doing tab completion for filenames.
+" These are files we are not likely to want to edit or read.
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log
+
+" Autocomplete commands
+set wildmenu
+set wildchar=<Tab>
+set wildmode=list:longest,full
+set wildignore+=*.o,*.obj,*.pyc,*.aux,*.bbl,*.blg,.git,.svn,.hg
+set wildignore+=*/build_/*,*/coverage/*,*/dist/*,*/public/*
+set wildignore+=*.log,*.jpg,*.png,*.svg,*.pdf
+set whichwrap=b,s,h,l,<,>,[,]
+
+" Completion
+set complete-=i,t
+set completeopt=longest,menuone
+set omnifunc=syntaxcomplete#Complete
+
+" Searching
+set hlsearch          " highlight search
+set incsearch         " Incremental search, search as you type
+set showmatch         " Highlights the matching braces|brackets|parens when the cursor is on a bracket.
+
+" Look & Feel Options
+syntax on             " Syntax highlighting
+set t_Co=256          " 256 colors
+set sidescrolloff=2   " scrollbars
+set scrolloff=3       " when scrolling, keep cursor 3 lines away from screen border
+set numberwidth=4     " whanges how wide the column containing line numbers will be.
+set equalalways       " multiple windows, when created, are equal in size
+set splitbelow        " make the new window appear below the current window
+set splitright        " make the new window appear on the right
+set cursorline        " cursor highlights
+set title             " show title in console
+set ruler             " show ruler
+set number            " Show line numbers
+set showcmd           " show current command on ruler
+set showmode          " show current mode on ruler
+set laststatus=2      " always show the status line
+set vb t_vb=          " Turn off bell
+set foldmethod=indent " fold group of lines with the same indent
+set foldlevel=1       " fold one level
+set background=dark
+set mouse=a
+
+" Sets what is saved when you save a session
+set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
+
+" Invisible characters
+set listchars=trail:.,tab:>-,eol:$
+set listchars+=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set nolist
+
+set backspace=indent,eol,start
+set matchpairs+=<:>
+set nofoldenable " Turn off folding
+
+set viewoptions=folds,options,cursor,unix,slash
+set virtualedit=onemore
+set history=1000
+
+" Persistent undos
+set undofile
+set undodir=~/.vim/dirs/undos
+
+if !isdirectory(&undodir)
+    call mkdir(&undodir, "p")
+endif
+
+au! BufEnter *.sh if getline(1) == "" | :call setline(1, "#!/bin/sh")
+
+autocmd Filetype html setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype markdown setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype sh setlocal ts=2 sts=2 sw=2 noexpandtab
+autocmd Filetype go setlocal ts=4 sts=4 sw=4 expandtab omnifunc=go#complete#Complete
+autocmd Filetype python setlocal ts=4 sts=4 sw=4 expandtab omnifunc=pythoncomplete#Complete
+autocmd Filetype javascript setlocal ts=4 sts=0 sw=4 noexpandtab omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType gitcommit setlocal tw=80 spell spellang=en
+autocmd FileType markdown setlocal spell spellang=en
+
+" NERDTree
+let g:NERDShutUp       = 1  " Silent mode
+let NERDTreeMinimalUI  = 1  " Minimal UI
+let NERDTreeIgnore     = ['\.pyc$', '\.pyo$', '\.o$', '\.so$']
+
+" Make cursor move by visual lines instead of file lines (when wrapping)
+nnoremap <up>   gk
+nnoremap <down> gj
+
+" (re)mapping keys
+nnoremap <tab>   :bn<cr>
+nnoremap <s-tab> :bp<cr>
+
+nnoremap <leader>d  :BD<cr>              " delete current buffer
+nnoremap <leader>v  :vsp<cr>             " split buffer vertically
+nnoremap <leader>h  :sp<cr>              " split buffer horizontally
+nnoremap <leader>c  :<esc><c-w>q<cr>     " delete split
+nnoremap <leader>e  <esc>:qall!<cr>      " close and exit
+nnoremap <leader>i  :set list!<cr>       " show special characters
+nnoremap <leader>!  :nohlsearch<cr>      " switch off the current search
+nnoremap <leader>x  :ArgWrap<CR>         " wrap function arguments
+nnoremap <leader>t  :NERDTreeToggle<cr>  " show nerdtree
+nnoremap <leader>s  :TagbarToggle<CR>    " show tagbar
+nnoremap <leader>q  :call ToggleQuickfixList()<CR>
+nnoremap <leader>g  :Ack! "\b<cword>\b" <CR>
+
+nnoremap <CR>  gf           " open the current file under cursor with 'enter'
+nnoremap <F2>  :A<CR>       " switch between source and header
+set pastetoggle=<leader>p       " switch on/off paste mode
+
+nnoremap <c-f>  :CtrlP<CR>           " search buffers and files
+nnoremap <c-n>  :cn<CR>              " move to next error
+nnoremap <c-p>  :cp<CR>              " move to previous error
+
+" call sudo when editing a readonly file
+cmap w!! %!sudo tee > /dev/null %
+
+" apply color scheme
+colorscheme gruvbox
+
+" Avoid useless ex Mode
+nnoremap Q <nop>
+
+let g:ale_fix_on_save = 1
+
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'python'    : ['flake8'],
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'python'    : ['yapf'],
+\}
+
+" Some plugin seems to search for something at startup, so this fixes that.
+silent! nohlsearch
+
