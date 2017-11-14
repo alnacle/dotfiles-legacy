@@ -1,0 +1,38 @@
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load.
+ZSH_THEME="robbyrussell"
+
+# extra plugins
+plugins=(git common-aliases sudo)
+
+# load oh-my-zsh
+source ~/.oh-my-zsh/oh-my-zsh.sh
+
+# common exports
+export EDITOR='vim'
+
+# local binaries
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/sbin:$PATH
+
+# common aliases
+alias ..='cd ..'
+alias ll='ls -hl'
+alias df='df -h'
+alias vi='vim'
+alias tmux='TERM=xterm-256color \tmux'
+alias rsync='rsync -azvP'
+alias ducks='du -cksh * | sort -rn|head -11'
+
+# specific OS environment
+os=$( tr '[A-Z]' '[a-z]' <<< `uname`)
+[ -f ~/.zsh/$os.zsh ] && source ~/.zsh/$os.zsh
+
+# local bin folder
+[ -d ~/bin ] && export PATH=~/bin:$PATH
+
+# local zshrc if available
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
