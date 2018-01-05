@@ -9,7 +9,7 @@ fi
 
 deploy() {
 	[ -f $2 ] && rm -f $2
-	ln -sv $1 $2
+	ln -s $1 $2
 }
 
 deploy $INSTALL_DIR/vim/vimrc ~/.vimrc
@@ -22,5 +22,4 @@ deploy $INSTALL_DIR/zsh/zshrc ~/.zshrc
 # install oh-my-zsh
 [ ! -d ~/.oh-my-zsh ] && git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
-# npm package path
-echo "prefix = $NPM_PACKAGES" >> ~/.npmrc
+

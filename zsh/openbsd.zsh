@@ -12,14 +12,3 @@ if [ -f /usr/local/bin/colorls ]; then
     alias ls='colorls -G'
 fi
 
-# Python
-export PYTHON_PACKAGES=~/packages/python
-export PYTHONPATH=$PYTHON_PACKAGES/lib/python/site-packages
-
-# Nodejs
-export NPM_PACKAGES=~/packages/js
-export NODE_PATH=$NPM_PACKAGES/lib/node_modules
-
-# expand PATH with installed packages
-export PATH=$PATH:$NPM_PACKAGES/bin
-export PATH=$PATH:$PYTHON_PACKAGES/bin

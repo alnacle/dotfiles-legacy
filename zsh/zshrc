@@ -36,3 +36,17 @@ os=$( tr '[A-Z]' '[a-z]' <<< `uname`)
 # local zshrc if available
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
+# common variables
+export PACKAGES=~/.packages
+export NPM_PACKAGES=$PACKAGES/js
+export NODE_PATH=$NPM_PACKAGES/lib/node_modules
+
+export PYTHONPATH=$PYTHON_PACKAGES/lib/python/site-packages
+export PYTHON_PACKAGES=$PACKAGES/python
+
+export GOPATH=$PACKAGES/go
+
+export PATH=$NPM_PACKAGES/bin:$PATH
+export PATH=$PYTHON_PACKAGES/bin:$PATH
+export PATH=$GOPATH/bin:$PATH
+
