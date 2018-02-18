@@ -1,8 +1,8 @@
-if [ -f /usr/local/bin/exa]; then
+if [ -f /usr/local/bin/exa ]; then
     alias ls='/usr/local/bin/exa'
 fi
 
-if [ -f /usr/local/bin/ccat]; then
+if [ -f /usr/local/bin/ccat ]; then
     alias ls='/usr/local/bin/ccat'
 fi
 
