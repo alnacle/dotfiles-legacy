@@ -1,17 +1,5 @@
 " Author: Alvaro Navarro <alnacle@achtung.es>
 
-" Setting up the vim plugin bundler
-" Kudos go to Juan Pedro Fisanotti (@fisadev) for the idea
-let iCanHazVundle=1
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-if !filereadable(vundle_readme)
-    echo "Installing Vundle..."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-    let iCanHazVundle=0
-endif
-
 " Some Linux distributions set filetype in general vimrc config
 filetype off
 filetype plugin indent off
@@ -33,13 +21,6 @@ Plugin 'ctrlpvim/ctrlp.vim'              " full path fuzzy finder
 Plugin 'mileszs/ack.vim'                 " Run ack search tool
 Plugin 'w0rp/ale'                        " linting and fixing tool
 Plugin 'sheerun/vim-polyglot'            " collection of language packs
-
-" Install plugins the first time vim runs
-if iCanHazVundle == 0
-    echo "Installing Bundles, please ignore key map error messages"
-    echo ""
-    :BundleInstall
-endif
 
 filetype plugin indent on
 
@@ -215,4 +196,5 @@ let g:ale_fixers = {
 
 " Some plugin seems to search for something at startup, so this fixes that.
 silent! nohlsearch
+set guioptions=
 

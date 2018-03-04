@@ -12,6 +12,10 @@ deploy() {
 	ln -s $1 $2
 }
 
+clone() {
+	[ ! -d $2 ] && git clone $1 $2
+}
+
 deploy $INSTALL_DIR/vim/vimrc ~/.vimrc
 deploy $INSTALL_DIR/git/gitconfig ~/.gitconfig
 deploy $INSTALL_DIR/git/gitignore ~/.gitignore
@@ -19,7 +23,8 @@ deploy $INSTALL_DIR/tmux/tmux.conf ~/.tmux.conf
 deploy $INSTALL_DIR/zsh/ ~/.zsh
 deploy $INSTALL_DIR/zsh/zshrc ~/.zshrc
 
-# install oh-my-zsh
-[ ! -d ~/.oh-my-zsh ] && git clone http://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+# install some github repos
+clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
 
 
