@@ -38,15 +38,19 @@ os=$( tr '[A-Z]' '[a-z]' <<< `uname`)
 
 # common variables
 export PACKAGES=~/.packages
-export NPM_PACKAGES=$PACKAGES/js
+
+# npm packages
+export NPM_PACKAGES=$PACKAGES
 export NODE_PATH=$NPM_PACKAGES/lib/node_modules
 
-export PYTHONPATH=$PYTHON_PACKAGES/lib/python/site-packages
-export PYTHON_PACKAGES=$PACKAGES/python
+# python 2/3
+export PYTHON_PACKAGES=$PACKAGES
+export PYTHONUSERBASE=$PACKAGES
 
-export GOPATH=$PACKAGES/go
+# golang
+export GOPATH=$PACKAGES
 
-export PATH=$NPM_PACKAGES/bin:$PATH
-export PATH=$PYTHON_PACKAGES/bin:$PATH
-export PATH=$GOPATH/bin:$PATH
+# common bin folder
+export PATH=$PACKAGES/bin:$PATH
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

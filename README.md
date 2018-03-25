@@ -7,7 +7,6 @@ my personal dotfiles
  exa 
  fzf
  ccat
- zsh-completions 
  go
  python
  node
