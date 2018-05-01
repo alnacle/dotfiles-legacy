@@ -103,7 +103,7 @@ set novisualbell      " Turn off bell
 set foldmethod=indent " fold group of lines with the same indent
 set foldlevel=1       " fold one level
 set background=dark
-set mouse=a
+set mouse=
 
 " Sets what is saved when you save a session
 set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
@@ -137,7 +137,7 @@ autocmd Filetype markdown setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype sh setlocal ts=2 sts=2 sw=2 noexpandtab
 autocmd Filetype go setlocal ts=4 sts=4 sw=4 expandtab omnifunc=go#complete#Complete
 autocmd Filetype python setlocal ts=4 sts=4 sw=4 expandtab omnifunc=pythoncomplete#Complete
-autocmd Filetype javascript setlocal ts=4 sts=0 sw=4 noexpandtab omnifunc=javascriptcomplete#CompleteJS
+autocmd Filetype javascript setlocal ts=4 sts=0 sw=4 expandtab omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType gitcommit setlocal tw=80
 
 " NERDTree
