@@ -30,11 +30,11 @@ alias ducks='du -cksh * | sort -rn|head -11'
 os=$( tr '[A-Z]' '[a-z]' <<< `uname`)
 [ -f ~/.zsh/$os.zsh ] && source ~/.zsh/$os.zsh
 
-# local bin folder
-[ -d ~/bin ] && export PATH=~/bin:$PATH
-
 # local zshrc if available
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+# source fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # common variables
 export PACKAGES=~/.packages
@@ -52,5 +52,3 @@ export GOPATH=$PACKAGES
 
 # common bin folder
 export PATH=$PACKAGES/bin:$PATH
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
