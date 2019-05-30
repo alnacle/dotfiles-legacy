@@ -1,39 +1,38 @@
-" Author: Alvaro Navarro <alnacle@achtung.es>
+" Author: Alvaro Navarro <alnacle@gmail.com>
 
-" Some Linux distributions set filetype in general vimrc config
-filetype off
-filetype plugin indent off
+" Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.local/share/nvim/plugged')
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+Plug 'scrooloose/nerdtree'             " file browser
+Plug 'ap/vim-buftabline'               " tabline buffer list
+Plug 'itchyny/lightline.vim'           " light statusline
+Plug 'qpkorr/vim-bufkill'              " delete a buffer without closing window 
+Plug 'milkypostman/vim-togglelist'     " toggle QuickFix list
+Plug 'airblade/vim-gitgutter'          " show git diff in the gutter
+Plug 'morhetz/gruvbox'                 " gruvbox theme
+Plug 'sheerun/vim-polyglot'            " collection of language packs
+Plug 'w0rp/ale'                        " linting and fixing tool
 
-Plugin 'gmarik/vundle'                   " vundle
-Plugin 'scrooloose/nerdtree'             " file browser
-Plugin 'majutsushi/tagbar'               " tags browser from source code files
-Plugin 'ap/vim-buftabline'               " tabline buffer list
-Plugin 'itchyny/lightline.vim'           " light statusline
-Plugin 'qpkorr/vim-bufkill'              " delete a buffer without closing window 
-Plugin 'milkypostman/vim-togglelist'     " toggle QuickFix list
-Plugin 'vim-scripts/a.vim'               " switch between source files and header
-Plugin 'airblade/vim-gitgutter'          " show git diff in the gutter
-Plugin 'morhetz/gruvbox'                 " gruvbox theme
-Plugin 'fatih/vim-go'                    " golang mode
-Plugin 'ctrlpvim/ctrlp.vim'              " full path fuzzy finder
-Plugin 'mileszs/ack.vim'                 " Run ack search tool
-Plugin 'w0rp/ale'                        " linting and fixing tool
-Plugin 'sheerun/vim-polyglot'            " collection of language packs
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+Plug 'deoplete-plugins/deoplete-jedi'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+
+" Initialize plugin system
+call plug#end()
 
 filetype plugin indent on
 
 " Master key
-let mapleader = ","
+let g:mapleader = ','
 
 " disable some stuff
-set nocompatible
 set nobackup
 set noswapfile
 set nomodeline
-set noautochdir
 
 " General Editing Stuff
 set tabstop=4       " Use 4 spaces ident style
@@ -51,6 +50,8 @@ set ttyfast         " Improves redrawing for newer computers.
 set lazyredraw      " Don't redraw during macros
 set colorcolumn=+1  " Show the 81st column
 set gdefault        " Use 'g' flag by default with :s/foo/bar/.
+set noautochdir       " working directory same as current file
+set clipboard+=unnamed  " copy and paste to the “global” buffer
 
 " Encoding
 set encoding=utf8
@@ -85,7 +86,7 @@ set showmatch         " Highlights the matching braces|brackets|parens when the 
 
 " Look & Feel Options
 syntax on             " Syntax highlighting
-set t_Co=256          " 256 colors
+set termguicolors
 set sidescrolloff=2   " scrollbars
 set scrolloff=3       " when scrolling, keep cursor 3 lines away from screen border
 set numberwidth=4     " whanges how wide the column containing line numbers will be.
@@ -105,8 +106,6 @@ set foldlevel=1       " fold one level
 set background=dark
 set mouse=
 
-" Sets what is saved when you save a session
-set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 
 " Invisible characters
 set listchars=trail:.,tab:>-,eol:$
@@ -125,60 +124,108 @@ set history=1000
 set undofile
 set undodir=~/.vim/dirs/undos
 
+
 if !isdirectory(&undodir)
     call mkdir(&undodir, 'p')
 endif
 
-au! BufEnter *.sh if getline(1) == "" | :call setline(1, "#!/bin/sh")
+" gitgutter
+" Use fontawesome icons as signs
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_modified_removed = '<'
+let g:gitgutter_override_sign_column_highlight = 1
+
+" Update sign column every quarter second
+set updatetime=250
+
+" Golang
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+au FileType go nmap <leader>g :GoDeclsDir<cr>
+au FileType go nmap <leader>m :GoTest -short<cr>
+
+
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+let g:go_fmt_command = 'goimports'
+let g:go_auto_type_info = 1
+
+" Error and warning signs.
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
+
 
 autocmd Filetype html setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype markdown setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype sh setlocal ts=2 sts=2 sw=2 noexpandtab
-autocmd Filetype go setlocal ts=4 sts=4 sw=4 expandtab omnifunc=go#complete#Complete
-autocmd Filetype python setlocal ts=4 sts=4 sw=4 expandtab omnifunc=pythoncomplete#Complete
+autocmd Filetype python setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=4 sts=0 sw=4 expandtab omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType gitcommit setlocal tw=80
 
+
 " NERDTree
 let g:NERDShutUp       = 1  " Silent mode
-let NERDTreeMinimalUI  = 1  " Minimal UI
-let NERDTreeIgnore     = ['\.pyc$', '\.pyo$', '\.o$', '\.so$']
-
-" Make cursor move by visual lines instead of file lines (when wrapping)
-nnoremap <up>   gk
-nnoremap <down> gj
+let g:NERDTreeMinimalUI  = 1  " Minimal UI
+let g:NERDTreeIgnore     = ['\.pyc$', '\.pyo$', '\.o$', '\.so$']
 
 " (re)mapping keys
 nnoremap <tab>   :bn<cr>
 nnoremap <s-tab> :bp<cr>
 
+nnoremap <leader>c  :<esc><c-w>q<cr>     " delete split
+nnoremap <leader>e  <esc>:qall!<cr>      " close and exit
 nnoremap <leader>d  :BD<cr>              " delete current buffer
 nnoremap <leader>v  :vsp<cr>             " split buffer vertically
 nnoremap <leader>h  :sp<cr>              " split buffer horizontally
-nnoremap <leader>c  :<esc><c-w>q<cr>     " delete split
-nnoremap <leader>e  <esc>:qall!<cr>      " close and exit
 nnoremap <leader>i  :set list!<cr>       " show special characters
 nnoremap <leader>!  :nohlsearch<cr>      " switch off the current search
 nnoremap <leader>x  :ArgWrap<CR>         " wrap function arguments
 nnoremap <leader>t  :NERDTreeToggle<cr>  " show nerdtree
 nnoremap <leader>s  :TagbarToggle<CR>    " show tagbar
 nnoremap <leader>q  :call ToggleQuickfixList()<CR>
-nnoremap <leader>g  :Ack! "\b<cword>\b" <CR>
 
 nnoremap <CR>  gf           " open the current file under cursor with 'enter'
-nnoremap <F2>  :A<CR>       " switch between source and header
 set pastetoggle=<leader>p       " switch on/off paste mode
 
-nnoremap <c-f>  :CtrlP<CR>           " search buffers and files
-nnoremap <c-n>  :cn<CR>              " move to next error
-nnoremap <c-p>  :cp<CR>              " move to previous error
+" don't use arrowkeys
+noremap <Up>    <NOP>
+noremap <Down>  <NOP>
+noremap <Left>  <NOP>
+noremap <Right> <NOP>
 
-" call sudo when editing a readonly file
-cmap w!! %!sudo tee > /dev/null %
+" really, just don't
+inoremap <Up>    <NOP>
+inoremap <Down>  <NOP>
+inoremap <Left>  <NOP>
+inoremap <Right> <NOP>
+
+nnoremap f :Files<CR>
+nnoremap t :NERDTreeToggle<CR> 
+nnoremap s :Ag<CR>
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 
 " apply color scheme
 colorscheme gruvbox
+
+" NERDTree on ctrl+n
+let NERDTreeShowHidden=1
 
 " Avoid useless ex Mode
 nnoremap Q <nop>
@@ -199,4 +246,12 @@ let g:ale_fixers = {
 " Some plugin seems to search for something at startup, so this fixes that.
 silent! nohlsearch
 set guioptions=
+
+" make FZF respect gitignore if `ag` is installed
+" you will obviously need to install `ag` for this to work
+if (executable('ag'))
+    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+endif
+
+let g:deoplete#enable_at_startup = 1
 

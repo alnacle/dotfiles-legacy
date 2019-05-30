@@ -13,24 +13,25 @@ deploy() {
 }
 
 clone() {
-	[ ! -d ${2} ] && git clone ${1} ${2}
+	[ ! -d ${2} ] && git clone --recursive ${1} ${2}
 }
 
-deploy $INSTALL_DIR/vim/vimrc ~/.vimrc
+# symlink to dotfiles
 deploy $INSTALL_DIR/git/gitconfig ~/.gitconfig
 deploy $INSTALL_DIR/git/gitignore ~/.gitignore
 deploy $INSTALL_DIR/tmux/tmux.conf ~/.tmux.conf
 deploy $INSTALL_DIR/zsh/zshrc ~/.zshrc
 deploy $INSTALL_DIR/zsh/ ~/.zsh
 
+mkdir ~/.config/nvim/
+deploy $INSTALL_DIR/nvim/init.vim ~/.config/nvim/
+
 # install some github repos
 clone https://github.com/junegunn/fzf.git ~/.fzf
-clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+~/.fzf/install --all
 
-# packages: ack-grep
+# install pip packages
+# pip install neovim
 
-# Go
-#   curl -k https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz | tar xvz -C /opt/
-# Java
-#   curl -k -L -b "oraclelicense=a" https://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/jdk-8u172-linux-x64.tar.gz | tar xvz
+echo "prefix=$HOME/packages" >> ~/.npmrc
+

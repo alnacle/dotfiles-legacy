@@ -5,6 +5,9 @@ my personal dotfiles
 
 `
  fzf
+ neovim
+ the_silver_searcher
+ ccat
  go
  python
  node
