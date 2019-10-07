@@ -14,12 +14,14 @@ Plug 'sheerun/vim-polyglot'            " collection of language packs
 Plug 'w0rp/ale'                        " linting and fixing tool
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'zchee/deoplete-go',    { 'do': 'make'}
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
+
+Plug 'fatih/vim-go'
+
+Plug 'dbeniamine/cheat.sh-vim'
 
 " Initialize plugin system
 call plug#end()
@@ -105,7 +107,7 @@ set foldmethod=indent " fold group of lines with the same indent
 set foldlevel=1       " fold one level
 set background=dark
 set mouse=
-
+set t_ut=
 
 " Invisible characters
 set listchars=trail:.,tab:>-,eol:$
@@ -142,38 +144,74 @@ let g:gitgutter_override_sign_column_highlight = 1
 set updatetime=250
 
 " Golang
-au FileType go set noexpandtab
-au FileType go set shiftwidth=4
-au FileType go set softtabstop=4
-au FileType go set tabstop=4
-au FileType go nmap <leader>g :GoDeclsDir<cr>
-au FileType go nmap <leader>m :GoTest -short<cr>
-
-
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
+let g:go_highlight_interfaces = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 let g:go_auto_sameids = 1
-let g:go_fmt_command = 'goimports'
 let g:go_auto_type_info = 1
+
+let g:go_fmt_command = 'goimports'
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
 " Error and warning signs.
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+au FileType go nmap g :GoDef<cr>
+au FileType go nmap m :GoTest -short<cr>
+au filetype go inoremap <buffer> . .<C-x><C-o>
 
 autocmd Filetype html setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype markdown setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype sh setlocal ts=2 sts=2 sw=2 noexpandtab
-autocmd Filetype python setlocal ts=4 sts=4 sw=4 expandtab
-autocmd Filetype javascript setlocal ts=4 sts=0 sw=4 expandtab omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType gitcommit setlocal tw=80
+
+au FileType gitcommit setlocal spell
+au FileType gitcommit setlocal textwidth=80
+
+au FileType javascript set expandtab
+au FileType javascript set shiftwidth=2
+au FileType javascript set softtabstop=2
+au FileType javascript set tabstop=2
+au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+
+au FileType json set expandtab
+au FileType json set shiftwidth=2
+au FileType json set softtabstop=2
+au FileType json set tabstop=2
+
+au FileType make set noexpandtab
+au FileType make set shiftwidth=2
+au FileType make set softtabstop=2
+au FileType make set tabstop=2
+
+au FileType markdown setlocal spell
+au FileType markdown set expandtab
+au FileType markdown set shiftwidth=4
+au FileType markdown set softtabstop=4
+au FileType markdown set tabstop=4
+au FileType markdown set syntax=markdown
+
+au FileType python set expandtab
+au FileType python set shiftwidth=4
+au FileType python set softtabstop=4
+au FileType python set tabstop=4
+
+au FileType vim set expandtab
+au FileType vim set shiftwidth=4
+au FileType vim set softtabstop=4
+au FileType vim set tabstop=4
 
 
 " NERDTree
@@ -193,18 +231,21 @@ nnoremap <leader>h  :sp<cr>              " split buffer horizontally
 nnoremap <leader>i  :set list!<cr>       " show special characters
 nnoremap <leader>!  :nohlsearch<cr>      " switch off the current search
 nnoremap <leader>x  :ArgWrap<CR>         " wrap function arguments
-nnoremap <leader>t  :NERDTreeToggle<cr>  " show nerdtree
-nnoremap <leader>s  :TagbarToggle<CR>    " show tagbar
-nnoremap <leader>q  :call ToggleQuickfixList()<CR>
 
 nnoremap <CR>  gf           " open the current file under cursor with 'enter'
 set pastetoggle=<leader>p       " switch on/off paste mode
 
+nnoremap f :Files<CR>
+nnoremap t :NERDTreeToggle<CR> 
+nnoremap q :call ToggleQuickfixList()<CR>
+nnoremap s :Ag<CR>
+nnoremap W <C-W>w
+
 " don't use arrowkeys
-noremap <Up>    <NOP>
-noremap <Down>  <NOP>
-noremap <Left>  <NOP>
-noremap <Right> <NOP>
+noremap <Up>     <NOP>
+noremap <Down>   <NOP>
+noremap <Left>   <NOP>
+noremap <Right>  <NOP>
 
 " really, just don't
 inoremap <Up>    <NOP>
@@ -212,14 +253,10 @@ inoremap <Down>  <NOP>
 inoremap <Left>  <NOP>
 inoremap <Right> <NOP>
 
-nnoremap f :Files<CR>
-nnoremap t :NERDTreeToggle<CR> 
-nnoremap s :Ag<CR>
-
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+"map <C-j> <C-W>j
+"map <C-k> <C-W>k
+"map <C-h> <C-W>h
+"map <C-l> <C-W>l
 
 " apply color scheme
 colorscheme gruvbox
@@ -229,8 +266,6 @@ let NERDTreeShowHidden=1
 
 " Avoid useless ex Mode
 nnoremap Q <nop>
-
-let g:ale_fix_on_save = 1
 
 let g:ale_linters = {
 \   'javascript': ['eslint'],
@@ -243,6 +278,8 @@ let g:ale_fixers = {
 \   'python'    : ['yapf'],
 \}
 
+let g:ale_fix_on_save = 1
+
 " Some plugin seems to search for something at startup, so this fixes that.
 silent! nohlsearch
 set guioptions=
@@ -254,4 +291,6 @@ if (executable('ag'))
 endif
 
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#source_importer = 1
 

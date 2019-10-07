@@ -21,10 +21,13 @@ deploy $INSTALL_DIR/git/gitconfig ~/.gitconfig
 deploy $INSTALL_DIR/git/gitignore ~/.gitignore
 deploy $INSTALL_DIR/tmux/tmux.conf ~/.tmux.conf
 deploy $INSTALL_DIR/zsh/zshrc ~/.zshrc
-deploy $INSTALL_DIR/zsh/ ~/.zsh
 
 mkdir ~/.config/nvim/
 deploy $INSTALL_DIR/nvim/init.vim ~/.config/nvim/
+
+# Install the Vim-plug Plugin ManagerPermalink
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # install some github repos
 clone https://github.com/junegunn/fzf.git ~/.fzf

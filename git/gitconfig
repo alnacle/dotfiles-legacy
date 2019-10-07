@@ -3,7 +3,7 @@
     email = alnacle@gmail.com
 
 [core]
-    editor = vim
+    editor = nvim
     excludesfile = ~/.gitignore
 
 [push]
@@ -47,4 +47,5 @@
 
 [branch]
 	autosetuprebase = always
-
+[credential]
+	helper = osxkeychain

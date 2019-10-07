@@ -22,13 +22,13 @@ export GREP_COLORS=auto
 export GREP_COLOR=auto
 
 export PATH=$HOME/bin
-#export PATH=$PATH:/usr/local/bin
-#export PATH=$PATH:/usr/local/sbin
+export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:/usr/bin
 export PATH=$PATH:/usr/sbin
 export PATH=$PATH:/bin
 export PATH=$PATH:/sbin
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+#export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 setopt no_beep
 setopt interactive_comments
@@ -190,9 +190,8 @@ paste-insert() {
 
 # common aliases
 
-[ -f /usr/local/bin/exa ] && alias ls='/usr/local/bin/exa'
-
-alias ll='ls -hl'
+alias ls='ls -G'
+alias ll='ls -hlG'
 alias la='ll -A'
 alias vi='nvim'
 alias vim='nvim'
@@ -206,41 +205,30 @@ autoload -U colors && colors
 local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
 PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git-prompt-info)'
 
-# Plan9port
-export PLAN9=$HOME/src/github.com/9fans/plan9port
-export PATH=$PATH:$PLAN9/bin
-
 # source fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# manually installed packages sandbox
-export PACKAGES=$HOME/packages
+# Plan9port
+export PLAN9=${PACKAGES}/src/github.com/9fans/plan9port
+export PATH=${PATH}:${PLAN9}/bin
 
-# local packages
-export PATH=$HOME/packages/bin:$PATH
+# manually installed packages sandbox
+export PACKAGES=${HOME}/.local
+export PATH=${PACKAGES}/bin:$PATH
 
 # Rust
 export PATH=$HOME/.cargo/bin:$PATH
 
 # npm packages
-export NPM_PACKAGES=$PACKAGES
-export NODE_PATH=$NPM_PACKAGES/lib/node_modules
-
-# python
-export PYTHONUSERBASE=$PACKAGES
+export NPM_PACKAGES=${PACKAGES}
+export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
 
 # golang
-export GOPATH=${HOME}
+export GOPATH=${PACKAGES}
 
 # ruby
 export GEM_HOME=${HOME}/.gem
 export PATH=${GEM_HOME}/bin:${PATH}
-
-# android
-export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
-
-# Docker
-export DOCKER_ID_USER="alnacle"
 
 # Language
 if [[ -z "$LANG" ]]; then
@@ -256,7 +244,6 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ~/bin
   ${PACKAGES}/bin
   $path
 )
@@ -264,10 +251,9 @@ path=(
 OSTYPE=$(uname -s)
 
 if [[ $OSTYPE == "Darwin" ]]; then
-    export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+    export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
     export HOMEBREW_NO_ANALYTICS=1
     export HOMEBREW_NO_AUTO_UPDATE=1
-
 fi
 
 if [[ $OSTYPE == "Linux" ]]; then
@@ -281,8 +267,5 @@ if [[ $OSTYPE == "OpenBSD" ]]; then
     export PKG_PATH=http://ftp.spline.de/pub/OpenBSD/snapshots/packages/$(machine -a)/
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# local zshrc if available
-#[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
