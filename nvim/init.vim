@@ -108,6 +108,7 @@ set foldlevel=1       " fold one level
 set background=dark
 set mouse=
 set t_ut=
+set visualbell t_vb=
 
 " Invisible characters
 set listchars=trail:.,tab:>-,eol:$
@@ -172,11 +173,6 @@ au FileType go nmap g :GoDef<cr>
 au FileType go nmap m :GoTest -short<cr>
 au filetype go inoremap <buffer> . .<C-x><C-o>
 
-autocmd Filetype html setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype markdown setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype sh setlocal ts=2 sts=2 sw=2 noexpandtab
-
 au FileType gitcommit setlocal spell
 au FileType gitcommit setlocal textwidth=80
 
@@ -213,9 +209,12 @@ au FileType vim set shiftwidth=4
 au FileType vim set softtabstop=4
 au FileType vim set tabstop=4
 
+au Filetype html setlocal ts=2 sts=2 sw=2 expandtab
+au Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
+au Filetype sh setlocal ts=2 sts=2 sw=2 noexpandtab
 
 " NERDTree
-let g:NERDShutUp       = 1  " Silent mode
+let g:NERDShutUp         = 1  " Silent mode
 let g:NERDTreeMinimalUI  = 1  " Minimal UI
 let g:NERDTreeIgnore     = ['\.pyc$', '\.pyo$', '\.o$', '\.so$']
 
@@ -252,11 +251,6 @@ inoremap <Up>    <NOP>
 inoremap <Down>  <NOP>
 inoremap <Left>  <NOP>
 inoremap <Right> <NOP>
-
-"map <C-j> <C-W>j
-"map <C-k> <C-W>k
-"map <C-h> <C-W>h
-"map <C-l> <C-W>l
 
 " apply color scheme
 colorscheme gruvbox

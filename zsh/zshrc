@@ -195,6 +195,7 @@ alias ll='ls -hlG'
 alias la='ll -A'
 alias vi='nvim'
 alias vim='nvim'
+alias v='nvim'
 alias ..='cd ..'
 alias df='df -h'
 alias tmux='TERM=xterm-256color \tmux'
@@ -207,10 +208,6 @@ PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git-prompt-info)'
 
 # source fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Plan9port
-export PLAN9=${PACKAGES}/src/github.com/9fans/plan9port
-export PATH=${PATH}:${PLAN9}/bin
 
 # manually installed packages sandbox
 export PACKAGES=${HOME}/.local
@@ -229,6 +226,10 @@ export GOPATH=${PACKAGES}
 # ruby
 export GEM_HOME=${HOME}/.gem
 export PATH=${GEM_HOME}/bin:${PATH}
+
+# Plan9port
+export PLAN9=${PACKAGES}/src/github.com/9fans/plan9port
+export PATH=${PATH}:${PLAN9}/bin
 
 # Language
 if [[ -z "$LANG" ]]; then
@@ -258,8 +259,7 @@ fi
 
 if [[ $OSTYPE == "Linux" ]]; then
     export JAVA_HOME=/opt/java
-    export GOROOT=/opt/go
-    export PATH=$JAVA_HOME/bin:$GOROOT/bin:$PATH
+    export PATH=$JAVA_HOME/bin:$PATH
 fi
 
 if [[ $OSTYPE == "OpenBSD" ]]; then
@@ -267,5 +267,15 @@ if [[ $OSTYPE == "OpenBSD" ]]; then
     export PKG_PATH=http://ftp.spline.de/pub/OpenBSD/snapshots/packages/$(machine -a)/
 fi
 
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+export PATH=$HOME/.pyenv/bin:$PATH
+export PATH=$HOME/.goenv/bin:$PATH
 
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+eval "$(goenv init -)"
+
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
