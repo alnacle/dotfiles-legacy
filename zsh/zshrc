@@ -188,6 +188,10 @@ paste-insert() {
   _paste_content+=$KEYS
 }
 
+function path(){
+    echo -e ${PATH//:/\\n}
+}
+
 # common aliases
 
 alias ls='ls -G'
@@ -209,26 +213,15 @@ PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git-prompt-info)'
 # source fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# manually installed packages sandbox
-export PACKAGES=${HOME}/.local
-export PATH=${PACKAGES}/bin:$PATH
-
 # Rust
-export PATH=$HOME/.cargo/bin:$PATH
-
-# npm packages
-export NPM_PACKAGES=${PACKAGES}
-export NODE_PATH=${NPM_PACKAGES}/lib/node_modules
-
-# golang
-export GOPATH=${PACKAGES}
+export PATH=${HOME}/.cargo/bin:$PATH
 
 # ruby
 export GEM_HOME=${HOME}/.gem
 export PATH=${GEM_HOME}/bin:${PATH}
 
 # Plan9port
-export PLAN9=${PACKAGES}/src/github.com/9fans/plan9port
+export PLAN9=${HOME}/src/github.com/9fans/plan9port
 export PATH=${PATH}:${PLAN9}/bin
 
 # Language
@@ -245,7 +238,6 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ${PACKAGES}/bin
   $path
 )
 
@@ -269,13 +261,14 @@ fi
 
 export PATH=$HOME/.pyenv/bin:$PATH
 export PATH=$HOME/.goenv/bin:$PATH
+export PATH=$HOME/.nodenv/bin:$PATH
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-
 eval "$(goenv init -)"
+eval "$(nodenv init -)"
 
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
+export PATH="${GOROOT}/bin:$PATH"
+export PATH="${GOPATH}/bin:$PATH"
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
