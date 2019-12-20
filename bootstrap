@@ -39,16 +39,15 @@ echo "Cloning goenv"
 clone https://github.com/syndbg/goenv.git ~/.goenv
 
 echo "Cloning pyenv"
-clone https://github.com/pyenv/pyenv.git  ~/.pyenv
-clone https://github.com/pyenv/pyenv-doctor.git ~/.pyenv/plugins/pyenv-doctor
-clone https://github.com/pyenv/pyenv-installer.git ~/.pyenv/plugins/pyenv-installer
-clone https://github.com/pyenv/pyenv-update.git ~/.pyenv/plugins/pyenv-update
+clone https://github.com/pyenv/pyenv.git            ~/.pyenv
+clone https://github.com/pyenv/pyenv-doctor.git     ~/.pyenv/plugins/pyenv-doctor
+clone https://github.com/pyenv/pyenv-installer.git  ~/.pyenv/plugins/pyenv-installer
+clone https://github.com/pyenv/pyenv-update.git     ~/.pyenv/plugins/pyenv-update
 clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
-clone https://github.com/pyenv/pyenv-which-ext.git ~/.pyenv/plugins/pyenv-which-ext
+clone https://github.com/pyenv/pyenv-which-ext.git  ~/.pyenv/plugins/pyenv-which-ext
 
 echo "Cloning nodenv"
-clone https://github.com/nodenv/nodenv.git ~/.nodenv
-mkdir -p ~/.nodenv/plugins
-clone https://github.com/nodenv/node-build.git ~/.nodenv./plugins/node-build
+clone https://github.com/nodenv/nodenv.git            ~/.nodenv
+clone https://github.com/nodenv/node-build.git        ~/.nodenv/plugins/node-build
 clone https://github.com/nodenv/nodenv-package-rehash ~/.nodenv/plugins/nodenv-package-rehash.git
 

@@ -10,18 +10,13 @@ Plug 'qpkorr/vim-bufkill'              " delete a buffer without closing window
 Plug 'milkypostman/vim-togglelist'     " toggle QuickFix list
 Plug 'airblade/vim-gitgutter'          " show git diff in the gutter
 Plug 'morhetz/gruvbox'                 " gruvbox theme
+Plug 'fatih/vim-go'                    " golang support
 Plug 'sheerun/vim-polyglot'            " collection of language packs
-Plug 'w0rp/ale'                        " linting and fixing tool
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go',    { 'do': 'make'}
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
-Plug 'fatih/vim-go'
-
-Plug 'dbeniamine/cheat.sh-vim'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
 " Initialize plugin system
 call plug#end()
@@ -35,6 +30,7 @@ let g:mapleader = ','
 set nobackup
 set noswapfile
 set nomodeline
+set nowritebackup
 
 " General Editing Stuff
 set tabstop=4       " Use 4 spaces ident style
@@ -156,14 +152,8 @@ let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
+let g:go_def_mapping_enabled = 0
 
-let g:go_fmt_command = 'goimports'
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
-
-" Error and warning signs.
-let g:ale_sign_error = '⤫'
-let g:ale_sign_warning = '⚠'
 
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
@@ -186,6 +176,7 @@ au FileType json set expandtab
 au FileType json set shiftwidth=2
 au FileType json set softtabstop=2
 au FileType json set tabstop=2
+au FileType json syntax match Comment +\/\/.\+$+
 
 au FileType make set noexpandtab
 au FileType make set shiftwidth=2
@@ -261,19 +252,6 @@ let NERDTreeShowHidden=1
 " Avoid useless ex Mode
 nnoremap Q <nop>
 
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'python'    : ['flake8'],
-\   'vim'       : ['vint'],
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\   'python'    : ['yapf'],
-\}
-
-let g:ale_fix_on_save = 1
-
 " Some plugin seems to search for something at startup, so this fixes that.
 silent! nohlsearch
 set guioptions=
@@ -284,7 +262,46 @@ if (executable('ag'))
     let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 endif
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#source_importer = 1
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 

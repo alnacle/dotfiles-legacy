@@ -8,6 +8,8 @@ my personal dotfiles
  neovim
  the_silver_searcher
  ccat
+ ctags
+ yarn
  go
  python
  node
